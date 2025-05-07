@@ -1,0 +1,194 @@
+{
+  "name": "AI-Powered Email Automation using n8n, Google Cloud & Grog Chat Model",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        -140
+      ],
+      "id": "a5efb096-e796-4341-b77f-036e4288401d",
+      "name": "When chat message received",
+      "webhookId": "8d8fcb34-3b9a-4596-bcd5-66f16b504e4b"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        0,
+        -140
+      ],
+      "id": "25bd04f0-757a-4d50-a52e-10e844d7117a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        0,
+        60
+      ],
+      "id": "61f4936c-56ec-404a-9bcb-38ddcb159f0c",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "Mh69nOvrDEULp7gt",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        120,
+        60
+      ],
+      "id": "9e9f674f-ed3d-4a10-ad17-86f73a48b178",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1DwaI_EVg_kMQkeJfehcS9NukeUfBmnyfhHF0dsfzkKI",
+          "mode": "list",
+          "cachedResultName": "project team",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DwaI_EVg_kMQkeJfehcS9NukeUfBmnyfhHF0dsfzkKI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DwaI_EVg_kMQkeJfehcS9NukeUfBmnyfhHF0dsfzkKI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        260,
+        80
+      ],
+      "id": "3b4de9d1-dc0d-4f95-a502-7ee18a48adac",
+      "name": "Google Sheets",
+      "notesInFlow": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LGxeUt87NeExdW2E",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Krish"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        460,
+        80
+      ],
+      "id": "5e102d1b-1462-48d1-b604-a7daa402876a",
+      "name": "Gmail",
+      "webhookId": "3efabee5-569e-4d30-935e-dbad9f6fdcca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8qGbXMHTea72ADma",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bd873c8e-48f6-4833-9c6d-9b651e04c157",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cf7547165e3cf979ec9080ec55fe2fe52c1dac64f7bc23346de3d0325cbb23a0"
+  },
+  "id": "RJSljvPrXcNEbUE1",
+  "tags": []
+}
